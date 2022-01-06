@@ -1,5 +1,9 @@
 //This module will be to track login messages.
-var url = 'http://mylogger.io/log'; //This is fake, Lets imagine that we are using a 3rd party logging service. We will send an http request to this url
+//This is fake, Lets imagine that we are using a 3rd party logging service. We will send an http request to this url
+
+/*
+var url = 'http://mylogger.io/log'; 
+
 function log(message) {
   //Send an http request (we will not actaully issue this request)
   console.log(message);
@@ -10,6 +14,8 @@ function log(message) {
 module.exports.log = log;
 module.exports.endPoint = url; //Note that we do not need to run this line so we can keep url private
 
+*/
+
 //To export just the function and not the entire module + functions you can type
 //module.exports = log;
 
@@ -18,3 +24,23 @@ module.exports.endPoint = url; //Note that we do not need to run this line so we
 // (function(exports, require, module, __filename, __dirname){ your code here })
 //The main importance is that the require, module, exports, etc are local functions and not global functions
 //We can run something like consol.log(__filename); and get the filename for this module
+
+//-----------------------------------------------------------------------------------------------------------------------
+
+/* 6. Extending Emitter class */
+
+const EventEmitter = require('events');
+
+class Logger extends EventEmitter {
+
+  //The keyword function is not needed here in a class
+  log(message) {
+    //Send an http request (we will not actaully issue this request)
+    console.log(message);
+  
+    this.emit('messagedLogged2', {id:1, url: 'http://'});
+  }
+
+}
+
+module.exports = Logger;

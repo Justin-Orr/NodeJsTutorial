@@ -102,6 +102,8 @@ fs.readdir('$', function(err, files) {
 
 /* 5. Events */
 //Events are signals to let us know that something has happened within our application 
+
+/*
 const EventEmitter = require('events'); //The naming is using uppercase because we are grabbing the class and not the object and now we need an instance of the class
 const emitter = new EventEmitter();
 
@@ -122,3 +124,64 @@ emitter.on('messagedLogged2', function(eventArg){
   console.log('Second listener called', eventArg)
 });
 emitter.emit('messagedLogged2', {id:1, url: 'http://'}); //event, object/eventArg {id, url}
+
+//Exercise
+
+emitter.on('Logging', function(eventArg){
+  console.log('Logging', eventArg);
+});
+
+emitter.emit('Logging', {data: 'This is a test logged message.'});
+*/
+
+//-----------------------------------------------------------------------------------------------------------------------
+
+/* 6. Extending Event Emmiter (Using events the proper way) */
+//In normal circumstances we do not want to work with the emitter directly. We want to extend a class for it and have all of its capabilities stored there. The reason we extend is to allow us to add more functionality like custome methods to our Emitter, which in our case is the log function.
+//Look at the logger.js file
+
+/*
+const Logger = require('./logger.js');
+const logger = new Logger();
+
+logger.on('messagedLogged2', function(eventArg){
+  console.log('Second listener called', eventArg)
+});
+
+logger.log('message');
+*/
+
+//-----------------------------------------------------------------------------------------------------------------------
+
+/* 7. HTTP Module */
+
+/*
+const http = require('http');
+const server = http.createServer(); //This server is an extension of event emitter specifically Event Emitter > Net.Server > HTTP.Server
+
+//Connection is a default event. Look in the documentation for details.
+server.on('connection',  function(socket){
+  console.log('New connection...');
+});
+
+//This allows us to listen to a specified port on the machine. This is raising an event and needs to be caught by the listener above
+server.listen(3000); 
+console.log('Listening on port 3000...');
+*/
+
+//In a real world application we will not be responding to the connection event. It is too low level
+const http = require('http');
+const server = http.createServer(function(req, res){ //Request and response
+  //Instead of working with the socket like before we can work with the actual request and responses
+  if(req.url === '/') {
+    res.write('Hellow World');
+    res.end();
+  }
+
+});
+
+server.listen(3000); 
+console.log('Listening on port 3000...');
+
+//Now this is not how we will typically go about handling more routes/endpoints. Things will get very messy and that is where express comes in as a build upon the HTTP Module in node.
+
